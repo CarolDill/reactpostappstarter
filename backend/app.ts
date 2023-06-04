@@ -48,10 +48,12 @@ app.get("/api/posts", async (req, res) => {
 });
 
 // ⭐️ TODO: Implement this yourself
-app.get("/api/posts/:id", (req, res) => {
-  const id = req.params.id;
+app.get("/api/posts/:id", async (req, res) => {
+  const id = +req.params.id;
+  console.log(req.params)
+  // console.log(id);
   // The line below should be fixed.
-  res.json(posts[0]);
+  res.json(posts[id-1]);
 });
 
 /**
