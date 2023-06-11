@@ -1,6 +1,5 @@
 import Layout from "./components/misc/Layout";
-//import LoginPage from "./pages/Auth/Login.page";
-import AuthenticationTitle from "./pages/Auth/Login";
+import AuthenticationTitle from "./pages/Auth/Login.page";
 import Landing from "./pages/Landing/Landing.page";
 import NotFound from "./pages/Notfound/NotFound.page";
 import CreatePostPage from "./pages/Post/CreatePost.page";
@@ -13,10 +12,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import { PostPage, postsLoader } from "./pages/Post/Post.page";
-// import { postDetailsLoader } from "./pages/Post/PostDetails.page";
-// import PostDetailsPage from "./pages/Post/PostDetails.page";
-import { postDetailsLoader } from "./pages/Post/ArticleDetail";
-import { ArticleDetail } from "./pages/Post/ArticleDetail";
+import { postDetailsLoader, PostDetail } from "./pages/Post/PostDetails.page";
 import { postEditDetailsLoader } from "./pages/Post/EditPost.page";
 
 
@@ -56,7 +52,7 @@ export const Router = () => {
           path="/posts/:id"
           element={
             <ProtectedRoute isAllowed={!!authCheck}>
-              <ArticleDetail />
+              <PostDetail />
             </ProtectedRoute>
           }
           loader={postDetailsLoader}
