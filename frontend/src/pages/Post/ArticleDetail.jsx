@@ -4,11 +4,14 @@ import DOMAIN from "../../services/endpoint";
 import axios from "axios";
 import useBoundStore from "../../store/Store";
 
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
     display: 'flex',
+    maxWidth: 800,
+    margin: 'auto',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: `calc(${theme.spacing.xl} * 2)`,
     borderRadius: theme.radius.md,
@@ -24,7 +27,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   image: {
-    maxWidth: '40%',
+    maxWidth: '30%',
 
     [theme.fn.smallerThan('sm')]: {
       maxWidth: '100%',
@@ -54,7 +57,7 @@ const useStyles = createStyles((theme) => ({
 
   inputWrapper: {
     width: '100%',
-    flex: '1',
+    // justifyItems:'flex-end',
   },
 
   input: {
@@ -64,15 +67,24 @@ const useStyles = createStyles((theme) => ({
   },
 
   control: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 4,
   },
 }));
+
+const getName = (email) => {
+  const pos = email.indexOf("@");
+  return email.substring(0,pos);
+}
+
+const capitalize = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 export function ArticleDetail() {
   const {  user } = useBoundStore((state) => state);
   const post = useLoaderData();
-  console.log(post);
+  // console.log(post);
 
   const { classes } = useStyles();
   return (
@@ -80,19 +92,20 @@ export function ArticleDetail() {
       <div className={classes.body}>
         <Title className={classes.title}>{post.Title}</Title>
         <Text fw={500} fz="lg" mb={5}>
-          {post.userId}
+          {post.title}
+        </Text>
+        <Text  fz="xs" mb={3}>
+          By: {getName(user.email)}
+        </Text>
+        <Text  fz="xs" mb={3}>
+         {capitalize(post.category)}
         </Text>
         <Text fz="sm" c="dimmed">
           {post.content}
         </Text>
 
         <div className={classes.controls}>
-          {!!user ? (
-            <Button className={classes.control}>Edit</Button>
-          ) : (
-            <p>test</p>
-          )}
-          
+          {user &&<Link to={"../posts/edit/" + post.id}><Button className={classes.control}>Edit</Button></Link>}
         </div>
       </div>
       <Image src={post.image} className={classes.image} />
@@ -103,9 +116,7 @@ export function ArticleDetail() {
 export const postDetailsLoader = async ({ params }) => {
   // do something with this
   const id = params.id;
-  // console.log(typeof(id));
   const res = await axios.get(`${DOMAIN}/api/posts/${id}`);
-  console.log(res.data);
+  // console.log(res.data);
   return res.data;
-  // return null;
 };

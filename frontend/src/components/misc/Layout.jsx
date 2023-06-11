@@ -1,13 +1,11 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "./Navbar";
-import { HeaderSimple } from "./Header";
-
-const links = ['/','posts'];
+// import Navbar from "./Navbar";
+import { HeaderResponsive } from "./Header";
 
 const Layout = () => (
   
   <div>
-    <HeaderSimple links={links}/>
+    <HeaderResponsive />
     <main>
       <Outlet />
     </main>

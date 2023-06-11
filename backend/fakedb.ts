@@ -41,6 +41,15 @@ export const addPost = (post: any) => {
   posts.push(post);
 };
 
+export const editPost = (post: any) => {
+  const {id} = post;
+  function findId(item: any) { 
+    return item.id === id;
+  }
+  const postIndex = posts.findIndex(findId);
+  posts[postIndex] = post;
+};
+
 export const verifyUser = (email: string, password: string) => {
   const user = users.find((user) => {
     return user.email === email && user.password === password;

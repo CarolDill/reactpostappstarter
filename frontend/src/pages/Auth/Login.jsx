@@ -28,8 +28,8 @@ export default function AuthenticationTitle() {
     }
   }, [user]);
 
-  const onLogin = async () => {
-    // e.preventDefault();
+  const onLogin = async (e) => {
+    e.preventDefault();
     if (!email || !password) return;
     loginService(email, password);
   };
@@ -59,7 +59,7 @@ export default function AuthenticationTitle() {
               Forgot password?
             </Anchor>
           </Group>
-          <Button fullWidth mt="xl" type="submit" onClick={onLogin}>
+          <Button fullWidth mt="xl" onClick={onLogin}>
             Sign in
           </Button >
           {authLoading ? <h2>Loading...</h2> : null}

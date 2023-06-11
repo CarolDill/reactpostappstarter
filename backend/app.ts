@@ -7,9 +7,11 @@ import {
   verifyUser,
   parseToken,
   addPost,
+  editPost,
   posts,
   sleep,
 } from "./fakedb";
+import { validRequest } from "./middlewares";
 
 const port = 8085;
 const app = express();
@@ -44,16 +46,29 @@ app.post("/api/user/validation", (req, res) => {
 
 app.get("/api/posts", async (req, res) => {
   // Sleep delay goes here
+  await sleep(1000);
   res.json(posts);
 });
 
 // ⭐️ TODO: Implement this yourself
 app.get("/api/posts/:id", async (req, res) => {
   const id = +req.params.id;
-  console.log(req.params)
-  // console.log(id);
   // The line below should be fixed.
   res.json(posts[id-1]);
+});
+
+app.get("/api/posts/edit/:id", async (req, res) => {
+  const id = +req.params.id;
+  res.json(posts[id-1]);
+});
+
+app.post("/api/posts/edit/:id", validRequest, async (req, res) => {
+  const id = +req.params.id;
+  console.log("app id:", id);
+  const incomingPost = req.body;
+  editPost(incomingPost);
+  // res.json(posts[id-1]);
+  res.status(200).json({ success: true });
 });
 
 /**
@@ -66,7 +81,7 @@ app.get("/api/posts/:id", async (req, res) => {
  *     What if you make a request to this route with a valid token but
  *     with an empty/incorrect payload (post)
  */
-app.post("/api/posts", (req, res) => {
+app.post("/api/posts", validRequest, (req, res) => {
   const incomingPost = req.body;
   addPost(incomingPost);
   res.status(200).json({ success: true });
